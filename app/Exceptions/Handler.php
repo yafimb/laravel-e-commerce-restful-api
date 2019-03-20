@@ -3,8 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+/**
+ * Class Handler
+ * @package App\Exceptions
+ */
 class Handler extends ExceptionHandler
 {
     /**
@@ -27,10 +33,9 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
+     * @param Exception $exception
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response|mixed
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -46,6 +51,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($request->acceptsJson())
+        {
+            if($exception instanceof ModelNotFoundException)
+            {
+                return response()->json([
+                    'errors' => ['Model not found']
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            if($exception instanceof NotFoundHttpException)
+            {
+                return response()->json([
+                    'errors' => ['Incorect route']
+                ], Response::HTTP_NOT_FOUND);
+            }
+        }
+
         return parent::render($request, $exception);
     }
 }
