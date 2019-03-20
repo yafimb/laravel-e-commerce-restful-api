@@ -2,13 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
 use App\Model\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
+/**
+ * Class ProductController
+ * @package App\Http\Controllers
+ */
 class ProductController extends Controller
 {
+    /**
+     * ProductController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('index','show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,14 +44,19 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ProductRequest $request
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $product = new Product();
+        $product->name      = $request->name;
+        $product->stock     = $request->stock;
+        $product->price     = $request->price;
+        $product->detail    = $request->description;
+        $product->discount  = $request->discount;
+        $product->save();
+
+        return response(['data' => new ProductResource($product)],Response::HTTP_CREATED);
     }
 
     /**
@@ -57,7 +76,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        echo"1";
     }
 
     /**
@@ -69,7 +88,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request['detail'] = $request['description'];
+        unset($request['description']);
+
+        $product->update($request->all());
+        return \response(['data' => new ProductResource($product)], Response::HTTP_ACCEPTED);
+
     }
 
     /**
