@@ -69,14 +69,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
      */
     public function edit(Product $product)
     {
-        echo"1";
     }
 
     /**
@@ -97,13 +93,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return \response(['data' => null], Response::HTTP_NO_CONTENT);
     }
 }
