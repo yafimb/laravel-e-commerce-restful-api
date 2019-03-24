@@ -80,13 +80,14 @@ class ReviewController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\Review  $review
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @param Review $review
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     * @throws \Exception
      */
-    public function destroy(Review $review)
+    public function destroy(Product $product, Review $review)
     {
-        //
+        $review->delete();
+        return \response(null, Response::HTTP_NO_CONTENT);
     }
 }

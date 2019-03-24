@@ -4,6 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class ReviewResource
+ * @package App\Http\Resources
+ */
 class ReviewResource extends JsonResource
 {
     /**
@@ -15,9 +19,10 @@ class ReviewResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'star'      =>$this->star,
-            'body'      =>$this->review,
-            'customer'  =>$this->customer,
+            'id'        => $this->id,
+            'star'      => $this->star,
+            'body'      => $this->review,
+            'customer'  => $this->customer,
         ];
     }
 }
