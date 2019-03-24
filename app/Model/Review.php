@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     /**
+     * @var array
+     */
+    protected $fillable = ['star', 'customer', 'review'];
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function products()
