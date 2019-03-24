@@ -16,7 +16,7 @@ trait ExceptionTrait
      * @param $e
      * @return \Illuminate\Http\JsonResponse
      */
-    public function apiException($reauest, $e)
+    public function apiException($request, $e)
     {
         if($e instanceof ModelNotFoundException)
         {
@@ -31,5 +31,7 @@ trait ExceptionTrait
                 'errors' => ['Incorrect route']
             ], Response::HTTP_NOT_FOUND);
         }
+
+        return parent::render($request, $e);
     }
 }
